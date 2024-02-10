@@ -1,0 +1,30 @@
+Disease, Symptoms
+Coronary Artery Disease, Chest pain, Shortness of breath, Fatigue with activity
+Hypertension, Headaches, Shortness of breath, Nosebleeds
+Heart Attack, Chest pain or discomfort, Feeling weak or lightheaded, Pain or discomfort in the jaw, neck, or back
+Congestive Heart Failure, Shortness of breath, Fatigue, Swelling in the legs, ankles, and feet
+Arrhythmia, Fluttering in the chest, Racing heartbeat, Slow heartbeat, Dizziness
+Cardiomyopathy, Breathlessness with exertion or even at rest, Swelling of the legs, ankles and feet, Fatigue
+Pericarditis, Sharp chest pain, Worsening pain when taking deep breaths or lying down, Low-grade fever
+Aortic Aneurysm, Deep pain in the chest or back, Shortness of breath, Trouble swallowing or breathing
+Rheumatic Heart Disease, Fever, Fatigue, Painful or tender joints, Shortness of breath
+Mitral Valve Prolapse, Heart palpitations, Shortness of breath, Fatigue, Dizziness
+Myocardial Infarction,Pressure in chest, Pain in shoulder, arm, back, Shortness of breath, Cold sweat
+Heart Failure,Shortness of breath, Fatigue, Swelling of legs, Rapid or irregular heartbeat
+Cardiomyopathy,Fatigue, Swelling of legs, feet and ankles, Breathlessness with exertion or at rest, Bloating of the abdomen
+Atrial Fibrillation,Irregular heartbeat, Rapid heartbeat, Dizziness, Fatigue
+Mitral Valve Prolapse,Heart murmur, Shortness of breath, Fatigue, Irregular heartbeat
+Hypertrophic Cardiomyopathy,Chest pain, especially during exercise, Shortness of breath, Fainting, especially during or just after exercise or exertion
+Pericarditis,Sharp, stabbing chest pain behind the breastbone or in the left side of your chest, Pain in your back, neck, or left shoulder, Fever, Weakness or fatigue
+Aortic Aneurysm,Deep, constant pain in your abdomen or on the side of your abdomen, Back pain, Pulse near your bellybutton
+Peripheral Arterial Disease,Painful cramping in hip, thigh or calf muscles after activity, Leg numbness or weakness, Coldness in lower leg or foot, Sores on toes, feet or legs that won't heal
+Rheumatic Heart Disease,Fever, Fatigue, Painful and tender joints, Shortness of breath, Heart murmur
+Pulmonary Embolism,Shortness of breath, Chest pain that may become worse when breathing deeply, Cough, sometimes with bloody mucus, Rapid heart rate
+Aortic Valve Disease,Breathlessness, Chest pain, palpitations and dizziness, Fatigue, Swollen ankles and feet
+Deep Vein Thrombosis (DVT),Swelling in the affected leg, Pain in your leg, Red or discolored skin on the leg, A feeling of warmth in the affected leg
+Endocarditis,Fever, Chills, Night sweats, Fatigue, Muscle and joint pains
+Stroke,Sudden numbness or weakness in the face, arm, or leg, especially on one side of the body, Confusion, trouble speaking or understanding speech, Trouble seeing in one or both eyes, Trouble walking, dizziness, loss of balance or coordination
+Hypertension,Headaches, Shortness of breath, Nosebleeds, Flushing, Dizziness
+Venous Thromboembolism (VTE),Swelling, Pain, Tenderness, Redness of the skin
+Arrhythmia,Fluttering in your chest, Racing heartbeat (tachycardia), Slow heartbeat (bradycardia), Chest pain or discomfort
+Angina,Chest pain or discomfort, Pain in your arms, neck, jaw, shoulder or back accompanying chest pain, Nausea, Fatigue, Shortness of breath, Sweating, Dizziness

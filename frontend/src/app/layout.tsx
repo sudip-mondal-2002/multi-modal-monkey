@@ -2,6 +2,9 @@ import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import {Theme} from "@/Theme";
 import {Navbar} from "@/Navbar";
+import Background from './background.png'
+import Image from "next/image";
+import {Container} from "@mui/material";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -23,12 +26,22 @@ export default function RootLayout(
             backgroundColor: "#0E1822",
             margin: 0,
             padding: 0,
-            backgroundImage: "url('https://aeiljuispo.cloudimg.io/v7/https://cdn-uploads.huggingface.co/production/uploads/6424f01ea4f3051f54dbbd85/oqVQ04b5KiGt5WOWJmYt8.png?w=200&h=200&f=face')",
-            backgroundSize: "fill",
-            backgroundAttachment: "fixed",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
         }} className={inter.className}>
+        <Container
+            maxWidth={false}
+            disableGutters={false}
+            sx={{
+                position: 'absolute',
+                top: 100,
+                zIndex: -1,
+                overflow: "hidden",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column"
+            }}>
+            <Image src={Background} alt={"background"} width={900} height={600}/>
+        </Container>
         <Theme>
             <Navbar/>
             {children}

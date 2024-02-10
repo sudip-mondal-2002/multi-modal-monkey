@@ -22,7 +22,7 @@ export default function Home() {
         browserSupportsSpeechRecognition
     } = useSpeechRecognition();
 
-    useEffect(()=>{
+    useEffect(() => {
         setSymptoms(transcript);
     }, [transcript])
 
@@ -54,7 +54,9 @@ export default function Home() {
                 style={{
                     display: "none"
                 }}/>
-            <Button variant={"contained"} onClick={() => {
+            <Button
+                disabled={loading}
+                variant={"contained"} onClick={() => {
                 reportInput.current?.click();
             }}>Upload Cardiac Report</Button>
             <br/>
@@ -99,16 +101,16 @@ export default function Home() {
                                 />
                                 {
                                     browserSupportsSpeechRecognition && <>
-                                    {listening ? <IconButton onClick={() => {
-                                        resetTranscript();
-                                        SpeechRecognition.stopListening();
-                                    }}>
-                                        <MicOffIcon color={"secondary"} />
-                                    </IconButton> : <IconButton onClick={() => {
-                                        SpeechRecognition.startListening();
-                                    }}>
-                                        <MicIcon color={"secondary"} />
-                                    </IconButton>}
+                                        {listening ? <IconButton onClick={() => {
+                                            resetTranscript();
+                                            SpeechRecognition.stopListening();
+                                        }}>
+                                            <MicOffIcon color={"secondary"}/>
+                                        </IconButton> : <IconButton onClick={() => {
+                                            SpeechRecognition.startListening();
+                                        }}>
+                                            <MicIcon color={"secondary"}/>
+                                        </IconButton>}
                                     </>
                                 }
                             </Box>
@@ -122,15 +124,15 @@ export default function Home() {
                                 setImageUrl(null);
                                 setSymptoms("");
                                 console.log(data)
-                                const res = await fetch("http://13.127.141.23/image", {
+                                const res = await fetch("https://multi-modal-monkey.onrender.com/image", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
                                     },
                                     body: JSON.stringify(data)
-                                }).then(res => res.text());
+                                }).then(res => res.json());
                                 setLoading(false);
-                                setResult(res);
+                                setResult(res.response);
                             }}>Analyze</Button>
                         </>
                     }
