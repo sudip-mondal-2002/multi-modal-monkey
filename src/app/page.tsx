@@ -1,8 +1,12 @@
 'use client';
 
-import {Button, Container, Paper, Skeleton, TextField, Typography} from "@mui/material";
-import {useRef, useState} from "react";
+import 'regenerator-runtime/runtime'
+import {Box, Button, Container, IconButton, Paper, Skeleton, TextField, Typography} from "@mui/material";
+import SpeechRecognition, {useSpeechRecognition} from 'react-speech-recognition'
+import {useEffect, useRef, useState} from "react";
 import Image from "next/image";
+import MicOffIcon from '@mui/icons-material/MicOff';
+import MicIcon from '@mui/icons-material/Mic';
 
 export default function Home() {
     const reportInput = useRef<HTMLInputElement>(null);
@@ -10,6 +14,18 @@ export default function Home() {
     const [symptoms, setSymptoms] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [result, setResult] = useState<string>("");
+
+    const {
+        transcript,
+        listening,
+        resetTranscript,
+        browserSupportsSpeechRecognition
+    } = useSpeechRecognition();
+
+    useEffect(()=>{
+        setSymptoms(transcript);
+    }, [transcript])
+
     return (
         <Container sx={{
             display: "flex",
@@ -26,8 +42,12 @@ export default function Home() {
                 onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                        const url = URL.createObjectURL(file);
-                        setImageUrl(url);
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const url = e.target?.result as string;
+                            setImageUrl(url);
+                        };
+                        reader.readAsDataURL(file);
                         setResult("");
                     }
                 }}
@@ -53,40 +73,64 @@ export default function Home() {
                     }}>
                     {
                         imageUrl && <><Image src={imageUrl} alt={"Cardiac image"} width={400} height={400}/>
-                            <TextField
-                                sx={{
-                                    marginTop: 2,
-                                    marginBottom: 2,
-                                    "& .MuiInputBase-input": {
-                                        color: "white"
-                                    }
-                                }}
-                                label={"Symptoms"}
-                                multiline={true}
-                                fullWidth={true}
-                                value={symptoms}
-                                color={"info"}
-                                autoFocus={true}
-                                onChange={(e) => {
-                                    setSymptoms(e.target.value);
-                                }}
-                            />
-                            <Button disabled={!imageUrl || !symptoms} variant={"contained"} onClick={() => {
+                            <Box sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                width: "100%"
+                            }}>
+                                <TextField
+                                    sx={{
+                                        marginTop: 2,
+                                        marginBottom: 2,
+                                        "& .MuiInputBase-input": {
+                                            color: "white"
+                                        }
+                                    }}
+                                    label={"Symptoms"}
+                                    multiline={true}
+                                    fullWidth={true}
+                                    value={symptoms}
+                                    color={"info"}
+                                    autoFocus={true}
+                                    onChange={(e) => {
+                                        setSymptoms(e.target.value);
+                                    }}
+                                />
+                                {
+                                    browserSupportsSpeechRecognition && <>
+                                    {listening ? <IconButton onClick={() => {
+                                        resetTranscript();
+                                        SpeechRecognition.stopListening();
+                                    }}>
+                                        <MicOffIcon color={"secondary"} />
+                                    </IconButton> : <IconButton onClick={() => {
+                                        SpeechRecognition.startListening();
+                                    }}>
+                                        <MicIcon color={"secondary"} />
+                                    </IconButton>}
+                                    </>
+                                }
+                            </Box>
+                            <Button disabled={!imageUrl || !symptoms} variant={"contained"} onClick={async () => {
                                 const data = {
-                                    imageUrl,
-                                    symptoms
+                                    img_url: imageUrl,
+                                    message: symptoms
                                 };
                                 setLoading(true);
                                 if (reportInput.current) reportInput.current.value = '';
                                 setImageUrl(null);
                                 setSymptoms("");
-                                setTimeout(() => {
-                                    setLoading(false);
-                                    setResult("Cardiac Report is normal. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, neque nec aliquam placerat, velit turpis commodo purus, ut tristique ligula nunc a nisi. Proin vehicula rutrum odio, nec suscipit leo gravida in. Nulla facilisi. Integer id elit quis metus consequat efficitur. Mauris lacinia dui a enim mollis, ut tincidunt eros condimentum. Vivamus sollicitudin libero ut turpis tincidunt, eget ultricies metus viverra.\n" +
-                                        "\n" +
-                                        "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus dictum justo id metus vehicula, a lobortis sapien tempus. Donec pulvinar lacus in lacus vehicula, vitae consequat lectus laoreet. Nullam viverra ipsum nec ante ultricies, ac dapibus enim vestibulum. Fusce et sapien nec arcu dapibus tempor. Sed at tellus velit. Vivamus tempus sapien in magna ultrices, vitae fermentum est ullamcorper. Integer eget vehicula velit. Curabitur eu quam vel justo lacinia eleifend. In id lorem at elit accumsan vehicula. Nulla facilisi. Maecenas sagittis nunc non nunc ultrices, ac hendrerit nulla convallis. Vivamus at mauris lacinia, tempor velit id, luctus dolor. Sed varius felis eu purus congue, in placerat eros vehicula. Cras vel sagittis tortor.");
-                                }, 2000);
-
+                                console.log(data)
+                                const res = await fetch("http://13.127.141.23/image", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify(data)
+                                }).then(res => res.text());
+                                setLoading(false);
+                                setResult(res);
                             }}>Analyze</Button>
                         </>
                     }
