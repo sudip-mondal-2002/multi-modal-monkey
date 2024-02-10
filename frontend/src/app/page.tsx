@@ -55,10 +55,17 @@ export default function Home() {
                     display: "none"
                 }}/>
             <Button
+                sx={{
+                    background: "linear-gradient(90deg,#D927C3  30%, #AB9AEC 90%)",
+                    borderRadius: 2,
+                    height: 48,
+                    fontWeight: "bold",
+                }}
                 disabled={loading}
-                variant={"contained"} onClick={() => {
-                reportInput.current?.click();
-            }}>Upload Cardiac Report</Button>
+                variant={"contained"}
+                onClick={() => {
+                    reportInput.current?.click();
+                }}>Upload Cardiac Report</Button>
             <br/>
             {(imageUrl || loading || result) &&
                 <Paper

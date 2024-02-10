@@ -2,8 +2,6 @@ import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import {Theme} from "@/Theme";
 import {Navbar} from "@/Navbar";
-import Background from './background.png'
-import Image from "next/image";
 import {Container} from "@mui/material";
 
 const inter = Inter({subsets: ["latin"]});
@@ -40,7 +38,6 @@ export default function RootLayout(
                 alignItems: "center",
                 flexDirection: "column"
             }}>
-            <Image src={Background} alt={"background"} width={900} height={600}/>
         </Container>
         <Theme>
             <Navbar/>

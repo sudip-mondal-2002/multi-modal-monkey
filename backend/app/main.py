@@ -9,10 +9,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
+class PatientQueryInput(BaseModel):
+    patient: str
+
+
 class OCR_Input(BaseModel):
-    patient_id:str = ""
-    message:str
-    img_url:str
+    patient_id: str = ""
+    message: str
+    img_url: str
+
 
 app = FastAPI()
 origins = ["*"]
@@ -25,13 +31,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/api")
 def get_commodities():
     # Confirm JSON data preparation
     return ""
 
+
 @app.post("/image")
-def image_ocr(data:OCR_Input):
+def image_ocr(data: OCR_Input):
     image_urls = [data.img_url]
 
     image_documents = load_image_urls(image_urls)
@@ -49,10 +57,10 @@ def image_ocr(data:OCR_Input):
         """,
         image_documents=image_documents,
     )
-    
+
     print(image_response)
 
-    llm=OpenAI(model='gpt-4-vision-preview')
+    llm = OpenAI(model='gpt-4-vision-preview')
 
     documents = SimpleDirectoryReader("app/data").load_data()
     index = VectorStoreIndex.from_documents(documents)
@@ -68,15 +76,41 @@ def image_ocr(data:OCR_Input):
     is missing, feel free to make your assumptiosnbased on the information you have. 
     DO NOT ADD ANY FILLER WORDS IN THE BEGINNING. YOU ONLY HAVE TO ANSWER THE QUERY. 
     """
-    
+
     query_engine = index.as_query_engine(llm=llm)
     response = query_engine.query(prompt)
     if hasattr(response, 'to_dict'):
         response_data = response.to_dict()
     else:
         response_data = {
-            'response': str(response) 
+            'response': str(response)
         }
 
     return response_data
-    
+
+
+@app.post("/patient-info")
+async def patient_info(query: PatientQueryInput):
+    # Load or initialize your query engine here. This example assumes it's already set up and accessible as
+    # query_engine. For instance, you might have a setup similar to the one in the image_ocr function:
+    llm = OpenAI(model='gpt-4-vision-preview')
+    documents = SimpleDirectoryReader("data").load_data()
+    index = VectorStoreIndex.from_documents(documents)
+    query_engine = index.as_query_engine(llm=llm)
+
+    # Construct the prompt for the query engine, incorporating the user's question
+    prompt = f"""
+    You are an assistant with access to detailed patient records. Based on the available information, answer the following question about the patient: "{query.patient}"
+    DO NOT ADD ANY FILLER WORDS IN THE BEGINNING. YOU ONLY HAVE TO ANSWER THE QUERY.
+    """
+
+    # Use the query engine to process the question and fetch relevant information
+    response = query_engine.query(prompt)
+
+    # Process the response to extract the relevant information
+    if hasattr(response, 'to_dict'):
+        response_data = response.to_dict()
+    else:
+        response_data = {'response': str(response)}
+
+    return response_data
