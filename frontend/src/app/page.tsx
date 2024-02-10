@@ -65,7 +65,7 @@ export default function Home() {
                 variant={"contained"}
                 onClick={() => {
                     reportInput.current?.click();
-                }}>Upload Cardiac Report</Button>
+                }}>Upload PMS Image</Button>
             <br/>
             {(imageUrl || loading || result) &&
                 <Paper
